@@ -28,7 +28,6 @@ coverage
 .nyc_output
 
 # Type definitions
-types
 lib
 *.d.ts
 *.globals.d.ts
