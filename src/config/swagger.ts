@@ -23,7 +23,10 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: ["./src/modules/**/*.route.ts"], // Route files থেকে docs পড়বে
+  apis: [
+    "./src/app.ts", // health রুটটি app.ts এ আছে, তাই এটি যোগ করতে হবে
+    "./src/modules/**/*.ts", // আপনার সব মডিউলের রুট ফাইলগুলো পড়ার জন্য
+  ],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
