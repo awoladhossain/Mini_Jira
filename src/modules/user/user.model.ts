@@ -1,0 +1,39 @@
+import { Schema } from "mongoose";
+import { UserRole, UserStatus } from "./user.enum";
+import type { IUserDocument } from "./user.interface";
+
+const userSchema = new Schema<IUserDocument>(
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      minlength: 6,
+      select: false, // Query তে by default আসবে না
+    },
+    role: {
+      type: String,
+      enum: Object.values(UserRole), // UserRole এর মান গুলো থেকে একটি হতে হবে
+      default: UserRole.MEMBER,
+    },
+    status: {
+      type: String,
+      enum: Object.values(UserStatus),
+      default: UserStatus.ACTIVE,
+    },
+  },
+  {
+    timestamps: true, // createdAt এবং updatedAt ফিল্ড অটোমেটিক যোগ করবে
+  },
+);
