@@ -1,13 +1,16 @@
+import type { SafeUser } from "./user.interface";
 import User from "./user.model";
-import type {
-  SafeUser,
-  RegisterInput,
-  UpdateUserInput,
-} from "./user.interface";
-import AppError from "../../shared/utils/AppError";
 
-
-const sanitizeUser =(user:any): SafeUser =>{
+const sanitizeUser = (user: any): SafeUser => {
   const { password, ...safeUser } = user.toObject(); // password ফিল্ড বাদ দিয়ে বাকি সব ফিল্ড safeUser তে রাখবে
   return safeUser as SafeUser; // Type assertion দিয়ে SafeUser টাইপে কাস্ট করা
-}
+};
+
+const getAllUsers = async (): Promise<SafeUser[]> => {
+  const users = await User.find({ status: "active" }); // active ইউজার গুলো খুঁজে বের করবে
+  return users.map(sanitizeUser); // প্রতিটি ইউজারকে sanitizeUser ফাংশনের মাধ্যমে SafeUser তে রূপান্তর করবে
+};
+
+export const UserService = {
+  getAllUsers,
+};
