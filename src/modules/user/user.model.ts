@@ -1,4 +1,5 @@
-import { Schema } from "mongoose";
+import bcrypt from "bcryptjs";
+import mongoose, { Schema } from "mongoose";
 import { UserRole, UserStatus } from "./user.enum";
 import type { IUserDocument } from "./user.interface";
 
@@ -37,3 +38,22 @@ const userSchema = new Schema<IUserDocument>(
     timestamps: true, // createdAt এবং updatedAt ফিল্ড অটোমেটিক যোগ করবে
   },
 );
+
+// save করার আগে পাসওয়ার্ড হ্যাশ করার জন্য middleware
+userSchema.pre("save", async function (this: IUserDocument) {
+  if (!this.isModified("password")) {
+    return;
+  }
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+userSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+): Promise<boolean> {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+const User = mongoose.model<IUserDocument>("User", userSchema);
+
+export default User;
