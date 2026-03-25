@@ -1,4 +1,5 @@
-import type { SafeUser } from "./user.interface";
+import AppError from "../../shared/utils/AppError";
+import type { SafeUser, UpdateUserInput } from "./user.interface";
 import User from "./user.model";
 
 const sanitizeUser = (user: any): SafeUser => {
@@ -10,7 +11,30 @@ const getAllUsers = async (): Promise<SafeUser[]> => {
   const users = await User.find({ status: "active" }); // active ইউজার গুলো খুঁজে বের করবে
   return users.map(sanitizeUser); // প্রতিটি ইউজারকে sanitizeUser ফাংশনের মাধ্যমে SafeUser তে রূপান্তর করবে
 };
+const getUserById = async (id: string): Promise<SafeUser> => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+  return sanitizeUser(user);
+};
+
+const updateUser = async (
+  id: string,
+  data: UpdateUserInput,
+): Promise<SafeUser> => {
+  const user = await User.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+  return sanitizeUser(user);
+};
 
 export const UserService = {
   getAllUsers,
+  getUserById,
+  updateUser,
 };
