@@ -33,8 +33,16 @@ const updateUser = async (
   return sanitizeUser(user);
 };
 
+const deleteUser = async (id: string): Promise<void> => {
+  const user = await User.findByIdAndDelete(id);
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+};
+
 export const UserService = {
   getAllUsers,
   getUserById,
   updateUser,
+  deleteUser,
 };
