@@ -15,7 +15,7 @@ const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getUserById = asyncHandler(async (req: Request, res: Response) => {
-  const user = await UserService.getUserById(req.params.id);
+  const user = await UserService.getUserById(req.params.id as string);
 
   const response: ApiResponse<SafeUser> = {
     success: true,
@@ -27,7 +27,7 @@ const getUserById = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const updateUser = asyncHandler(async (req: Request, res: Response) => {
-  const user = await UserService.updateUser(req.params.id, req.body);
+  const user = await UserService.updateUser(req.params.id as string, req.body);
 
   const response: ApiResponse<SafeUser> = {
     success: true,
@@ -39,7 +39,7 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const deleteUser = asyncHandler(async (req: Request, res: Response) => {
-  await UserService.deleteUser(req.params.id);
+  await UserService.deleteUser(req.params.id as string);
   res.status(204).send();
 });
 export const UserController = {
