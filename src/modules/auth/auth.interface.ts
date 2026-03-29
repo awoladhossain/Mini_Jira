@@ -2,7 +2,7 @@ import type { Types } from "mongoose";
 import type { UserRole } from "../user/user.enum";
 
 // Interface for JWT payload
-export interface IJWTPayload {
+export interface IJwtPayload {
   userId: Types.ObjectId;
   email: string;
   role: UserRole;
