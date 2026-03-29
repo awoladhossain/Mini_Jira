@@ -1,24 +1,24 @@
-# TypeScript Configuration এবং Best Practices গাইড
+# TypeScript কনফিগারেশন এবং বেস্ট প্র্যাকটিস গাইড
 
-## ত্বরিত সংক্ষিপ্তসার
+## সারসংক্ষেপ
 
-এই ডকুমেন্টটি TypeScript প্রজেক্টে `tsconfig.json` এর প্রতিটি সেটিং এবং ইন্ডাস্ট্রি-স্ট্যান্ডার্ড কোডিং প্র্যাকটিস ব্যাখ্যা করে।
+এই ডকুমেন্টটি TypeScript প্রজেক্টে `tsconfig.json` এর প্রতিটি সেটিং এবং ইন্ডাস্ট্রি-স্ট্যান্ডার্ড কোডিং প্র্যাকটিস বিস্তারিতভাবে ব্যাখ্যা করে।
 
 ---
 
-## 1. `tsconfig.json` কী এবং কেন প্রয়োজন?
+## ১. `tsconfig.json` কী এবং কেন দরকার?
 
-`tsconfig.json` হল **TypeScript কম্পাইলার কনফিগারেশন ফাইল**। এটি TypeScript কে বলে দেয়:
-- কোন ফাইলগুলি কম্পাইল করতে হবে
+`tsconfig.json` হলো **TypeScript কম্পাইলার কনফিগারেশন ফাইল**। এটি TypeScript কম্পাইলারকে বলে দেয়:
+- কোন ফাইলগুলো কম্পাইল করতে হবে
 - কীভাবে কম্পাইল করতে হবে
-- কোথায় আউটপুট রাখতে হবে
-- কতটা কঠোর টাইপ চেকিং করতে হবে
+- আউটপুট কোথায় রাখতে হবে
+- টাইপ চেকিং কতটা কঠোর হবে
 
 ---
 
-## 2. `compilerOptions` - প্রধান অংশ বিস্তারিত ব্যাখ্যা
+## ২. `compilerOptions` — বিস্তারিত ব্যাখ্যা
 
-### **2.1 ফাইল লোকেশন সেটিংস**
+### **২.১ ফাইল লোকেশন সেটিংস**
 
 ```json
 "rootDir": "./src",
@@ -26,8 +26,8 @@
 ```
 
 **কী করে:**
-- `rootDir`: আপনার সব `.ts` ফাইল কোথায় আছে তা বলে (চালু করা হয়নি এখানে)
-- `outDir`: কম্পাইল করা `.js` ফাইল কোথায় রাখতে হবে (চালু করা হয়নি এখানে)
+- `rootDir` — তোমার সব `.ts` ফাইল কোথায় আছে তা বলে দেয়
+- `outDir` — কম্পাইল করা `.js` ফাইল কোথায় রাখতে হবে তা নির্ধারণ করে
 
 **ইন্ডাস্ট্রি স্ট্যান্ডার্ড প্র্যাকটিস:**
 ```json
@@ -35,58 +35,58 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "baseUrl": "./src",
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist"]
-  }
+    "baseUrl": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
 ```
 
-**কেন গুরুত্বপূর্ণ:** প্রজেক্টকে সংগঠিত রাখে এবং বিল্ড প্রসেস স্পষ্ট করে।
+**কেন গুরুত্বপূর্ণ:** প্রজেক্ট গোছানো থাকে এবং বিল্ড প্রক্রিয়া স্পষ্ট হয়।
 
 ---
 
-### **2.2 এনভায়রনমেন্ট সেটিংস**
+### **২.২ এনভায়রনমেন্ট সেটিংস**
 
-#### **a) `module: "nodenext"`**
+#### **ক) `module: "nodenext"`**
 
 ```json
 "module": "nodenext"
 ```
 
-**কী করে:** কম্পাইল করা কোড কোন মডিউল সিস্টেম ব্যবহার করবে তা নির্ধারণ করে।
+**কী করে:** কম্পাইল করা কোড কোন মডিউল সিস্টেম ব্যবহার করবে তা ঠিক করে দেয়।
 
-**সম্ভাব্য মান এবং ব্যবহার:**
+**সম্ভাব্য মান ও ব্যবহার:**
 
 | মান | ব্যবহার | আউটপুট উদাহরণ |
-|-----|--------|----------------|
-| `commonjs` | Node.js (পুরাতন) | `const x = require('./file')` |
-| `nodenext` | Node.js 16+ (আধুনিক) | `import x from './file.js'` |
-| `esnext` | ব্রাউজার + আধুনিক bundlers | ES6 modules |
-| `amd` | ব্রাউজার (পুরাতন) | `define(['file'], ...)` |
+|-----|---------|----------------|
+| `commonjs` | পুরনো Node.js | `const x = require('./file')` |
+| `nodenext` | আধুনিক Node.js 16+ | `import x from './file.js'` |
+| `esnext` | ব্রাউজার ও আধুনিক বান্ডলার | ES6 modules |
+| `amd` | পুরনো ব্রাউজার | `define(['file'], ...)` |
 
 **ইন্ডাস্ট্রি স্ট্যান্ডার্ড:**
 - আধুনিক Node.js প্রজেক্টের জন্য: `"nodenext"`
-- ব্রাউজার প্রজেক্টের জন্য: `"esnext"` (bundler ব্যবহার করলে)
-- রিঅ্যাক্ট প্রজেক্টে: `"esnext"`
+- ব্রাউজার প্রজেক্টের জন্য: `"esnext"`
+- React প্রজেক্টে: `"esnext"`
 
 ---
 
-#### **b) `target: "esnext"`**
+#### **খ) `target: "esnext"`**
 
 ```json
 "target": "esnext"
 ```
 
-**কী করে:** টার্গেট JavaScript সংস্করণ নির্ধারণ করে।
+**কী করে:** কম্পাইল করা JavaScript কোন সংস্করণে আউটপুট হবে তা নির্ধারণ করে।
 
 **সম্ভাব্য মান:**
 
 | মান | JavaScript সংস্করণ | ব্রাউজার সাপোর্ট |
 |-----|------------------|-----------------|
-| `es5` | পুরাতন | IE 9+ |
+| `es5` | পুরনো | IE 9+ |
 | `es2015` | ES6 | আধুনিক ব্রাউজার |
-| `es2020` | আরও নতুন | খুব আধুনিক |
+| `es2020` | তুলনামূলক নতুন | আধুনিক ব্রাউজার |
 | `esnext` | সর্বশেষ | Node.js 16+ |
 
 **সঠিক পছন্দ:**
@@ -97,13 +97,13 @@
 // Node.js সার্ভার প্রজেক্টের জন্য
 "target": "esnext",
 
-// পুরাতন ব্রাউজার সাপোর্ট করতে হলে
+// পুরনো ব্রাউজার সাপোর্ট করতে হলে
 "target": "es2015"
 ```
 
 ---
 
-#### **c) `types: []`**
+#### **গ) `types: []`**
 
 ```json
 "types": []
@@ -111,9 +111,9 @@
 
 **কী করে:** `@types/*` প্যাকেজ থেকে কোন টাইপ ডেফিনিশন লোড করতে হবে তা নির্ধারণ করে।
 
-**খালি মানে:** কোন ডিফল্ট টাইপ লোড নেই। এটি কাস্টম টাইপ নিয়ন্ত্রণের জন্য ভালো।
+**খালি রাখার মানে:** কোনো ডিফল্ট টাইপ লোড হবে না। কাস্টম টাইপ নিয়ন্ত্রণের জন্য এটি উপযোগী।
 
-**Node.js প্রজেক্টে সঠিক সেটিংস:**
+**Node.js প্রজেক্টে সঠিক সেটিং:**
 ```json
 {
   "compilerOptions": {
@@ -121,30 +121,30 @@
     "lib": ["esnext"]
   }
 }
-// এবং টার্মিনালে: npm install -D @types/node
+// টার্মিনালে চালাও: npm install -D @types/node
 ```
 
 ---
 
-### **2.3 আউটপুট সেটিংস**
+### **২.৩ আউটপুট সেটিংস**
 
-#### **a) `sourceMap: true`**
+#### **ক) `sourceMap: true`**
 
 ```json
 "sourceMap": true
 ```
 
-**কী করে:** `.map` ফাইল তৈরি করে যা কম্পাইল করা কোড আসল `.ts` কোডের সাথে ম্যাপ করে।
+**কী করে:** `.map` ফাইল তৈরি করে যা কম্পাইল করা কোডকে আসল `.ts` ফাইলের সাথে সংযুক্ত করে।
 
 **সুবিধা:**
-- ডিবাগিং সহজ হয় (ব্রাউজার ডেভেলপার টুলস)
-- ব্রাউজারে আসল TypeScript দেখা যায়
+- ডিবাগিং সহজ হয়
+- ব্রাউজার ডেভেলপার টুলসে আসল TypeScript কোড দেখা যায়
 
 **ইন্ডাস্ট্রি প্র্যাকটিস:**
 ```json
 {
   "compilerOptions": {
-    "sourceMap": true,  // ডেভেলপমেন্টে সবসময় true
+    "sourceMap": true,         // ডেভেলপমেন্টে সবসময় true
     "inlineSourceMap": false,  // প্রোডাকশনে সাধারণত false
     "inlineSources": false
   }
@@ -153,17 +153,17 @@
 
 ---
 
-#### **b) `declaration: true`**
+#### **খ) `declaration: true`**
 
 ```json
 "declaration": true
 ```
 
-**কী করে:** `.d.ts` টাইপ ডেফিনিশন ফাইল তৈরি করে।
+**কী করে:** `.d.ts` টাইপ ডেফিনিশন ফাইল স্বয়ংক্রিয়ভাবে তৈরি করে।
 
 **কেন গুরুত্বপূর্ণ:**
-- লাইব্রেরি তৈরি করলে অপরিহার্য
-- অন্যরা আপনার কোড ব্যবহার করার সময় টাইপ সাপোর্ট পায়
+- লাইব্রেরি তৈরি করলে এটি অপরিহার্য
+- অন্যরা তোমার কোড ব্যবহার করার সময় টাইপ সাপোর্ট পাবে
 
 **উদাহরণ:**
 ```typescript
@@ -174,39 +174,37 @@ export function greet(name: string): string {
 ```
 
 ```typescript
-// dist/utils.d.ts (স্বয়ংক্রিয়ভাবে তৈরি)
+// dist/utils.d.ts (স্বয়ংক্রিয়ভাবে তৈরি হয়)
 export declare function greet(name: string): string;
 ```
 
 ---
 
-#### **c) `declarationMap: true`**
+#### **গ) `declarationMap: true`**
 
 ```json
 "declarationMap": true
 ```
 
-**কী করে:** `.d.ts.map` ফাইল তৈরি করে (ডেক্লারেশনের জন্য সোর্স ম্যাপ)।
+**কী করে:** `.d.ts.map` ফাইল তৈরি করে অর্থাৎ ডিক্লারেশনের জন্য সোর্স ম্যাপ।
 
-**কেয়ার:** লাইব্রেরি ডেভেলপমেন্টের জন্য দরকারি, সাধারণ অ্যাপের জন্য নয়।
+**মনে রাখো:** লাইব্রেরি ডেভেলপমেন্টের জন্য দরকারি, সাধারণ অ্যাপের জন্য নয়।
 
 ---
 
-### **2.4 কঠোর টাইপ চেকিং সেটিংস**
+### **২.৪ কঠোর টাইপ চেকিং সেটিংস**
 
-#### **a) `strict: true` (সবচেয়ে গুরুত্বপূর্ণ!)**
+#### **ক) `strict: true` — সবচেয়ে গুরুত্বপূর্ণ!**
 
 ```json
 "strict": true
 ```
 
-**কী করে:** সব কঠোর টাইপ চেকিং অপশন চালু করে। এটি সমান:
+**কী করে:** সব কঠোর টাইপ চেকিং অপশন একসাথে চালু করে। এটি আসলে নিচের সবগুলো অপশন একযোগে সক্রিয় করার সমান:
 
 ```json
 {
   "compilerOptions": {
-    "strict": true,
-    // যা আসলে নিম্নলিখিত সবকিছু চালু করে:
     "noImplicitAny": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -220,30 +218,29 @@ export declare function greet(name: string): string;
 
 **সুবিধা:**
 - বাগ আগেভাগে ধরা পড়ে
-- কোড আরও সুরক্ষিত
-- রক্ষণাবেক্ষণ সহজ
+- কোড আরও নিরাপদ হয়
+- রক্ষণাবেক্ষণ সহজ হয়
 
-**ইন্ডাস্ট্রি স্ট্যান্ডার্ড:** **সবসময় `true` রাখুন!**
+**ইন্ডাস্ট্রি স্ট্যান্ডার্ড:** **সবসময় `true` রাখো!**
 
 ---
 
-#### **b) `noUncheckedIndexedAccess: true`**
+#### **খ) `noUncheckedIndexedAccess: true`**
 
 ```json
 "noUncheckedIndexedAccess": true
 ```
 
-**কী করে:** ইনডেক্স অ্যাক্সেসের সময় অ্যারে বাউন্ডস চেক করে।
+**কী করে:** অ্যারেতে ইনডেক্স দিয়ে অ্যাক্সেস করার সময় `undefined` হওয়ার সম্ভাবনা ধরিয়ে দেয়।
 
 **উদাহরণ:**
 ```typescript
 const arr = [1, 2, 3];
 
-// এই কোড বিপদজনক:
+// এই কোড বিপজ্জনক:
 const num = arr[5];  // undefined হতে পারে!
-
-// কঠোর মোডে TypeScript এটি ধরে:
-// Type: number | undefined
+// কঠোর মোডে TypeScript এটি ধরবে:
+// টাইপ: number | undefined
 ```
 
 **সঠিক কোড:**
@@ -258,15 +255,15 @@ if (num !== undefined) {
 
 ---
 
-#### **c) `exactOptionalPropertyTypes: true`**
+#### **গ) `exactOptionalPropertyTypes: true`**
 
 ```json
 "exactOptionalPropertyTypes": true
 ```
 
-**কী করে:** অপশনাল প্রপার্টি কখনও `undefined` মূল্য নিতে পারে না।
+**কী করে:** অপশনাল প্রপার্টিতে `undefined` মান সরাসরি সেট করা যাবে না।
 
-**কার্যকরী:**
+**ভুল ব্যবহার:**
 ```typescript
 interface User {
   name: string;
@@ -274,121 +271,114 @@ interface User {
 }
 
 const user: User = { name: "John", middleName: undefined };
-// ❌ এরর: middleName কখনও undefined হতে পারে না, হয় স্ট্রিং, নতুবা উপস্থিত নেই
+// ❌ এরর: middleName হয় একটি string হবে, নয়তো একদম থাকবে না
 ```
 
-**সঠিক:**
+**সঠিক ব্যবহার:**
 ```typescript
-const user: User = { name: "John" };  // ✓ সঠিক
-const user2: User = { name: "John", middleName: "Doe" };  // ✓ সঠিক
+const user: User = { name: "John" };                          // ✓ সঠিক
+const user2: User = { name: "John", middleName: "Doe" };     // ✓ সঠিক
 ```
 
 ---
 
-### **2.5 স্টাইল এবং রিকমেন্ডেড অপশন**
+### **২.৫ অন্যান্য গুরুত্বপূর্ণ সেটিংস**
 
-#### **a) `jsx: "react-jsx"`**
+#### **ক) `jsx: "react-jsx"`**
 
 ```json
 "jsx": "react-jsx"
 ```
 
-**কী করে:** React JSX সিন্ট্যাক্স সাপোর্ট করে।
+**কী করে:** React JSX সিনট্যাক্স সাপোর্ট করে।
 
 **সম্ভাব্য মান:**
 
 | মান | ব্যবহার |
-|-----|--------|
-| `"react"` | বিবর্তনীয় React (React.createElement) |
-| `"react-jsx"` | আধুনিক React 17+ (সরাসরি JSX) |
+|-----|---------|
+| `"react"` | পুরনো React (React.createElement) |
+| `"react-jsx"` | আধুনিক React 17+ |
 | `"react-jsxdev"` | ডেভেলপমেন্ট মোড সহ |
-| `"preserve"` | JSX হিসেবে রাখুন (Babel ব্যবহার করলে) |
+| `"preserve"` | Babel ব্যবহার করলে |
 
-**আধুনিক প্রজেক্টে:** `"react-jsx"` ব্যবহার করুন।
+**আধুনিক প্রজেক্টে:** `"react-jsx"` ব্যবহার করো।
 
 ---
 
-#### **b) `verbatimModuleSyntax: true`**
+#### **খ) `verbatimModuleSyntax: true`**
 
 ```json
 "verbatimModuleSyntax": true
 ```
 
-**কী করে:** অপ্রয়োজনীয় ইম্পোর্ট অটোম্যাটিক রিমুভ করতে দেয় না।
-
-**সুবিধা:**
-- মডিউল সিন্ট্যাক্স স্পষ্ট থাকে
-- বান্ডলার কম্প্যাটিবিলিটি ভালো
+**কী করে:** অপ্রয়োজনীয় ইম্পোর্ট স্বয়ংক্রিয়ভাবে মুছে ফেলতে দেয় না, মডিউল সিনট্যাক্স স্পষ্ট রাখে।
 
 **সঠিক প্র্যাকটিস:**
 ```typescript
-// ✓ সঠিক - শুধু টাইপ ইম্পোর্ট করুন যখন শুধু টাইপ দরকার
+// ✓ শুধু টাইপ ইম্পোর্ট করতে হলে
 import type { User } from './types';
 
-// ✓ সঠিক - মূল্য ইম্পোর্ট করুন যখন আসল কোড দরকার
+// ✓ আসল কোড ইম্পোর্ট করতে হলে
 import { getUserName } from './utils';
 
-// ❌ ভুল - টাইপ এবং মূল্য মিক্স করবেন না
+// ❌ টাইপ আর মান একসাথে মিশিয়ে ইম্পোর্ট করো না
 import { User, getUserName } from './types';
 ```
 
 ---
 
-#### **c) `isolatedModules: true`**
+#### **গ) `isolatedModules: true`**
 
 ```json
 "isolatedModules": true
 ```
 
-**কী করে:** প্রতিটি ফাইল স্বাধীনভাবে কম্পাইল করা যায় এমনভাবে চেক করে।
+**কী করে:** প্রতিটি ফাইল আলাদাভাবে কম্পাইলযোগ্য কিনা তা যাচাই করে।
 
-**কেন গুরুত্বপূর্ণ:**
-- Babel, esbuild, swc ইত্যাদি সঠিকভাবে কাজ করে
-- মডার্ন বিল্ড সিস্টেম কম্প্যাটিবল
+**কেন গুরুত্বপূর্ণ:** Babel, esbuild, swc-এর মতো আধুনিক বিল্ড টুলের সাথে সামঞ্জস্যপূর্ণ থাকে।
 
 ---
 
-#### **d) `noUncheckedSideEffectImports: true`**
+#### **ঘ) `noUncheckedSideEffectImports: true`**
 
 ```json
 "noUncheckedSideEffectImports": true
 ```
 
-**কী করে:** সাইড এফেক্ট ছাড়া ইম্পোর্ট স্পষ্টভাবে চিহ্নিত করতে বাধ্য করে।
+**কী করে:** শুধু সাইড ইফেক্টের জন্য করা ইম্পোর্ট স্পষ্টভাবে চিহ্নিত করতে বাধ্য করে।
 
 **উদাহরণ:**
 ```typescript
-// ❌ সাইড এফেক্ট ইম্পোর্ট - স্পষ্টভাবে চিহ্নিত করুন
+// ❌ এভাবে করলে সতর্কতা দেবে
 import './styles.css';
 
-// ✓ সঠিক - স্পষ্টভাবে আছে
+// ✓ টাইপ ইম্পোর্ট — ঠিক আছে
 import type { User } from './types';
 
-import { getName } from './utils';  // এটি OK - মূল্য ইম্পোর্ট
+// ✓ মান ইম্পোর্ট — ঠিক আছে
+import { getName } from './utils';
 ```
 
 ---
 
-#### **e) `moduleDetection: "force"`**
+#### **ঙ) `moduleDetection: "force"`**
 
 ```json
 "moduleDetection": "force"
 ```
 
-**কী করে:** প্রতিটি ফাইল একটি মডিউল হিসেবে বিবেচনা করে।
+**কী করে:** প্রতিটি ফাইলকে একটি মডিউল হিসেবে বিবেচনা করে।
 
-**সুবিধা:** টপ-লেভেল `await` ব্যবহার করতে পারবেন।
+**সুবিধা:** টপ-লেভেলে `await` ব্যবহার করা যায়:
 
 ```typescript
-// এটি কাজ করে:
+// এটি কাজ করবে:
 const data = await fetch('/api/data');
 ```
 
 ---
 
-### **2.6 অন্যান্য গুরুত্বপূর্ণ সেটিংস**
-
-#### **a) `skipLibCheck: true`**
+#### **চ) `skipLibCheck: true`**
 
 ```json
 "skipLibCheck": true
@@ -397,52 +387,37 @@ const data = await fetch('/api/data');
 **কী করে:** `node_modules` এর `.d.ts` ফাইল টাইপ চেক করে না।
 
 **সুবিধা:**
-- কম্পাইল দ্রুততর হয়
+- কম্পাইল দ্রুত হয়
 - থার্ড-পার্টি লাইব্রেরির সমস্যায় বিরক্ত হতে হয় না
 
-**ইন্ডাস্ট্রি প্র্যাকটিস:** **সবসময় `true` রাখুন।**
+**ইন্ডাস্ট্রি প্র্যাকটিস:** **সবসময় `true` রাখো।**
 
 ---
 
-## 3. একটি সম্পূর্ণ ইন্ডাস্ট্রি-স্ট্যান্ডার্ড `tsconfig.json`
+## ৩. সম্পূর্ণ ইন্ডাস্ট্রি-স্ট্যান্ডার্ড `tsconfig.json`
 
-### **বিভিন্ন প্রজেক্ট টাইপের জন্য সুপারিশ:**
-
-#### **3.1 React ওয়েব অ্যাপ্লিকেশন**
+### **৩.১ React ওয়েব অ্যাপ্লিকেশন**
 
 ```json
 {
   "compilerOptions": {
-    // মডিউল এবং টার্গেট
     "module": "esnext",
     "target": "es2020",
     "lib": ["es2020", "dom", "dom.iterable"],
-
-    // ফাইল আউট্রি সেটিংস
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./src",
-
-    // JSX সাপোর্ট
     "jsx": "react-jsx",
-
-    // কঠোর টাইপ চেকিং
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
-    // মডার্ন সেটিংস
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-
-    // আউটপুট
     "sourceMap": true,
     "declaration": false,
     "skipLibCheck": true,
-
-    // অতিরিক্ত কঠোরতা
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -455,43 +430,30 @@ const data = await fetch('/api/data');
 
 ---
 
-#### **3.2 Node.js ব্যাকএন্ড অ্যাপ্লিকেশন**
+### **৩.২ Node.js ব্যাকএন্ড অ্যাপ্লিকেশন**
 
 ```json
 {
   "compilerOptions": {
-    // মডিউল এবং টার্গেট
     "module": "nodenext",
     "target": "esnext",
     "lib": ["esnext"],
-
-    // ফাইল আউট্রি
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./src",
-
-    // টাইপ সাপোর্ট
     "types": ["node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-
-    // কঠোর চেকিং
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
-    // মডার্ন সেটিংস
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-
-    // আউটপুট
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "skipLibCheck": true,
-
-    // অতিরিক্ত
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -504,39 +466,28 @@ const data = await fetch('/api/data');
 
 ---
 
-#### **3.3 TypeScript লাইব্রেরি**
+### **৩.৩ TypeScript লাইব্রেরি**
 
 ```json
 {
   "compilerOptions": {
-    // মডিউল এবং টার্গেট
     "module": "nodenext",
     "target": "es2020",
     "lib": ["es2020"],
-
-    // ফাইল আউট্রি
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./src",
-
-    // কঠোর চেকিং
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
-    // মডার্ন সেটিংস
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-
-    // আউটপুট (লাইব্রেরির জন্য গুরুত্বপূর্ণ)
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "stripInternal": true,  // ডকুমেন্টেশন থেকে @internal মুছুন
+    "stripInternal": true,
     "skipLibCheck": true,
-
-    // অতিরিক্ত
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
@@ -548,21 +499,21 @@ const data = await fetch('/api/data');
 
 ---
 
-## 4. ইন্ডাস্ট্রি-স্ট্যান্ডার্ড TypeScript কোডিং প্র্যাকটিস
+## ৪. ইন্ডাস্ট্রি-স্ট্যান্ডার্ড TypeScript কোডিং প্র্যাকটিস
 
-### **4.1 শক্তিশালী টাইপিং**
+### **৪.১ সঠিকভাবে টাইপ দেওয়া**
 
-#### ❌ **খারাপ:**
+#### ❌ ভুল:
 ```typescript
-function getUserData(id) {  // কোন টাইপ নেই!
+function getUserData(id) {  // কোনো টাইপ নেই!
   return { name: "John", age: 30 };
 }
 
 const user = getUserData(1);
-console.log(user.email);  // এরর সময়ে ধরা পড়ে না!
+console.log(user.email);  // রানটাইমে এরর ধরা পড়বে না!
 ```
 
-#### ✓ **সঠিক:**
+#### ✓ সঠিক:
 ```typescript
 interface User {
   name: string;
@@ -574,27 +525,27 @@ function getUserData(id: number): User {
 }
 
 const user = getUserData(1);
-console.log(user.email);  // ❌ কম্পাইল টাইম এরর - ধন্যবাদ TypeScript!
+console.log(user.email);  // ❌ কম্পাইল টাইমে ধরা পড়বে — TypeScript-এর কল্যাণে!
 ```
 
 ---
 
-### **4.2 কখনও `any` ব্যবহার করবেন না**
+### **৪.২ `any` কখনো ব্যবহার করো না**
 
-#### ❌ **খারাপ:**
+#### ❌ ভুল:
 ```typescript
 function processData(data: any) {
-  return data.toUpperCase();  // যদি data না থাকে?
+  return data.toUpperCase();  // data যদি string না হয়?
 }
 ```
 
-#### ✓ **সঠিক:**
+#### ✓ সঠিক:
 ```typescript
 function processData(data: string) {
   return data.toUpperCase();  // নিরাপদ এবং স্পষ্ট
 }
 
-// যদি বিভিন্ন টাইপ প্রয়োজন হয়:
+// একাধিক টাইপ লাগলে:
 function processData(data: string | number) {
   if (typeof data === 'string') {
     return data.toUpperCase();
@@ -605,27 +556,17 @@ function processData(data: string | number) {
 
 ---
 
-### **4.3 Null এবং Undefined হ্যান্ডলিং**
+### **৪.৩ Null ও Undefined হ্যান্ডলিং**
 
-#### ❌ **বিপদজনক:**
+#### ❌ বিপজ্জনক:
 ```typescript
-interface User {
-  name: string;
-  email: string;
-}
-
 function getUserEmail(user: User) {
-  return user.email.toLowerCase();  // null হতে পারে?
+  return user.email.toLowerCase();  // user null হলে ক্র্যাশ করবে!
 }
 ```
 
-#### ✓ **সঠিক:**
+#### ✓ সঠিক:
 ```typescript
-interface User {
-  name: string;
-  email: string;
-}
-
 function getUserEmail(user: User | null): string | null {
   return user?.email?.toLowerCase() ?? null;
 }
@@ -639,9 +580,9 @@ function getUserEmail(user: User | null): string | null {
 
 ---
 
-### **4.4 Union এবং Intersection টাইপ**
+### **৪.৪ Union ও Intersection টাইপ**
 
-#### **Union (এটি অথবা সেটি):**
+#### **Union — এটি অথবা ওটি:**
 ```typescript
 type Status = 'pending' | 'completed' | 'failed';
 
@@ -653,12 +594,11 @@ function handleStatus(status: Status) {
       return 'সম্পন্ন!';
     case 'failed':
       return 'ব্যর্থ!';
-    // ❌ এখানে ফোরগেট করলে এরর!
   }
 }
 ```
 
-#### **Intersection (এখানে একসাথে):**
+#### **Intersection — দুটো টাইপ একসাথে:**
 ```typescript
 interface HasName {
   name: string;
@@ -670,14 +610,14 @@ interface HasAge {
 
 type Person = HasName & HasAge;
 
-const person: Person = { name: "John", age: 30 };  // উভয় প্রপার্টি লাগবে
+const person: Person = { name: "John", age: 30 };  // দুটো প্রপার্টিই লাগবে
 ```
 
 ---
 
-### **4.5 Generics - পুনর্ব্যবহারযোগ্য কোড**
+### **৪.৫ Generics — পুনর্ব্যবহারযোগ্য কোড**
 
-#### ❌ **খারাপ (পুনরাবৃত্তি):**
+#### ❌ ভুল (পুনরাবৃত্তি):
 ```typescript
 function wrapInArray(value: string): string[] {
   return [value];
@@ -686,47 +626,45 @@ function wrapInArray(value: string): string[] {
 function wrapInArrayNumber(value: number): number[] {
   return [value];
 }
-
-// প্রতি টাইপের জন্য নতুন ফাংশন!
+// প্রতিটি টাইপের জন্য আলাদা ফাংশন!
 ```
 
-#### ✓ **সঠিক (Generics):**
+#### ✓ সঠিক (Generics):
 ```typescript
 function wrapInArray<T>(value: T): T[] {
   return [value];
 }
 
 // যেকোনো টাইপের সাথে কাজ করে:
-const stringArray = wrapInArray("hello");  // string[]
-const numberArray = wrapInArray(42);  // number[]
-const userArray = wrapInArray({ name: "John" });  // { name: string }[]
+const stringArray = wrapInArray("hello");       // string[]
+const numberArray = wrapInArray(42);            // number[]
+const userArray = wrapInArray({ name: "John" }); // { name: string }[]
 ```
 
 ---
 
-### **4.6 Const Assertions - স্থির মান**
+### **৪.৬ Const Assertions — নির্দিষ্ট মান**
 
 #### **সমস্যা:**
 ```typescript
 const colors = ['red', 'green', 'blue'];
-// colors এর টাইপ: string[]
-// কিন্তু আমরা জানি এটি এই তিনটি মান ছাড়া আর কিছু হবে না
+// টাইপ: string[]
+// কিন্তু আমরা জানি এই তিনটি মান ছাড়া আর কিছু হবে না
 ```
 
 #### **সমাধান:**
 ```typescript
 const colors = ['red', 'green', 'blue'] as const;
-// colors এর টাইপ: readonly ['red', 'green', 'blue']
-// এখন নিখুঁত!
+// টাইপ: readonly ['red', 'green', 'blue']
 
 type Color = typeof colors[number];  // 'red' | 'green' | 'blue'
 ```
 
 ---
 
-### **4.7 Module Organization (ফাইল সংগঠন)**
+### **৪.৭ প্রজেক্টের ফাইল কাঠামো**
 
-**ইন্ডাস্ট্রি স্ট্যান্ডার্ড প্রজেক্ট কাঠামো:**
+**ইন্ডাস্ট্রি স্ট্যান্ডার্ড অনুযায়ী:**
 
 ```
 src/
@@ -742,19 +680,19 @@ src/
 │   ├── userService.ts
 │   ├── apiService.ts
 │   └── authService.ts
-├── components/         # React কম্পোনেন্ট (যদি এক্সপ্লিকিট)
+├── components/         # React কম্পোনেন্ট
 │   ├── Header.tsx
 │   └── Footer.tsx
-├── constants/          # ধ্রুবক
+├── constants/          # ধ্রুবক মান
 │   └── config.ts
-└── index.ts           # মেইন এক্সপোর্ট
+└── index.ts            # মূল এক্সপোর্ট
 ```
 
 ---
 
-### **4.8 এক্সপোর্ট এবং ইম্পোর্ট সেরা প্র্যাকটিস**
+### **৪.৮ Export ও Import প্র্যাকটিস**
 
-#### **Named Exports (সুপারিশকৃত):**
+#### **Named Exports — সুপারিশকৃত:**
 ```typescript
 // userService.ts
 export function getUserById(id: number): Promise<User> {
@@ -769,7 +707,7 @@ export function updateUser(id: number, data: Partial<User>): Promise<User> {
 import { getUserById, updateUser } from './userService';
 ```
 
-#### **Default Exports (শুধু বিশেষ ক্ষেত্রে):**
+#### **Default Exports — বিশেষ ক্ষেত্রে:**
 ```typescript
 // config.ts
 const config = {
@@ -785,20 +723,17 @@ import config from './config';
 
 ---
 
-### **4.9 কীভাবে `strict` কনফিগ ব্যবহার করবেন:**
+### **৪.৯ Strict মোডে সঠিকভাবে কোড লেখা**
 
 ```typescript
-// ✓ স্ট্রিক্ট মোডে সবকিছু এক্সপ্লিসিট:
-
 interface ApiResponse {
   success: boolean;
-  data?: User;  // অপশনাল
+  data?: User;
   error?: string;
 }
 
 async function fetchUser(id: number): Promise<ApiResponse> {
   try {
-    // ...টাইপ সাথে সবকিছু
     return {
       success: true,
       data: { id, name: "John" }
@@ -820,26 +755,26 @@ if (response.success && response.data) {
 
 ---
 
-## 5. গুরুত্বপূর্ণ `tsconfig.json` এর অংশ সংক্ষেপণ
+## ৫. সেটিংস সংক্ষেপ
 
 ### **অবশ্যই সেট করতে হবে:**
 
 | অপশন | মান | কারণ |
 |------|-----|-------|
 | `strict` | `true` | সর্বোচ্চ টাইপ নিরাপত্তা |
-| `noUncheckedIndexedAccess` | `true` | অ্যারে বাউন্ডস চেক |
-| `exactOptionalPropertyTypes` | `true` | স্পষ্ট প্রপার্টি হ্যান্ডলিং |
+| `noUncheckedIndexedAccess` | `true` | অ্যারে বাউন্ডস যাচাই |
+| `exactOptionalPropertyTypes` | `true` | অপশনাল প্রপার্টি স্পষ্ট রাখে |
 | `skipLibCheck` | `true` | দ্রুত কম্পাইলেশন |
-| `isolatedModules` | `true` | আধুনিক বিল্ড টুলস কম্প্যাটিবল |
-| `verbatimModuleSyntax` | `true` | স্পষ্ট মডিউল সিন্ট্যাক্স |
-| `moduleDetection` | `"force"` | সব ফাইল মডিউল হিসেবে |
+| `isolatedModules` | `true` | আধুনিক বিল্ড টুলের সাথে সামঞ্জস্য |
+| `verbatimModuleSyntax` | `true` | মডিউল সিনট্যাক্স স্পষ্ট রাখে |
+| `moduleDetection` | `"force"` | সব ফাইল মডিউল হিসেবে গণ্য হয় |
 
 ---
 
-### **প্রজেক্ট টাইপ অনুযায়ী:**
+### **প্রজেক্টের ধরন অনুযায়ী:**
 
-| সেটিংস | React ওয়েব | Node.js | লাইব্রেরি |
-|--------|---------|---------|-----------|
+| সেটিং | React ওয়েব | Node.js | লাইব্রেরি |
+|--------|-----------|---------|-----------|
 | `module` | `esnext` | `nodenext` | `nodenext` |
 | `target` | `es2020` | `esnext` | `es2020` |
 | `declaration` | `false` | `true` | `true` |
@@ -847,32 +782,26 @@ if (response.success && response.data) {
 
 ---
 
-## 6. দ্রুত চেকলিস্ট
+## ৬. নতুন প্রজেক্ট শুরুর চেকলিস্ট
 
-নতুন TypeScript প্রজেক্ট শুরু করার সময়:
-
-- [ ] `strict: true` সেট করুন
-- [ ] `noImplicitReturns`, `noUnusedLocals`, `noUnusedParameters` সক্রিয় করুন
-- [ ] `rootDir` এবং `outDir` নির্ধারণ করুন
-- [ ] সঠিক `target` এবং `module` নির্বাচন করুন
-- [ ] `.gitignore` তে `dist` এবং `*.map` যোগ করুন
-- [ ] `skipLibCheck: true` সেট করুন
-- [ ] শুধু প্রয়োজনীয় `@types/*` প্যাকেজ ইনস্টল করুন
-- [ ] টাইপ-সেফ কোড লেখার অভ্যাস করুন
+- [ ] `strict: true` সেট করো
+- [ ] `noImplicitReturns`, `noUnusedLocals`, `noUnusedParameters` চালু করো
+- [ ] `rootDir` ও `outDir` নির্ধারণ করো
+- [ ] সঠিক `target` ও `module` বেছে নাও
+- [ ] `.gitignore` তে `dist` ও `*.map` যোগ করো
+- [ ] `skipLibCheck: true` সেট করো
+- [ ] শুধু প্রয়োজনীয় `@types/*` প্যাকেজ ইনস্টল করো
+- [ ] টাইপ-নিরাপদ কোড লেখার অভ্যাস করো
 
 ---
 
-## সংক্ষিপ্ত উপসংহার
+## উপসংহার
 
-একটি ভাল TypeScript কনফিগ এবং কোডিং প্র্যাকটিস আপনাকে:
+একটি ভালো TypeScript কনফিগ ও সঠিক কোডিং প্র্যাকটিস তোমাকে যা দেবে:
 
-✓ **RUN Time বাগ প্রতিরোধ করে**
-✓ **কোড রক্ষণাবেক্ষণ সহজ করে**
-✓ **টিম কোলাবরেশন উন্নত করে**
-✓ **ডেভেলপমেন্ট গতি বাড়ায়** (কম ডিবাগিং সময়)
+✓ **রানটাইম বাগ আগেভাগে ধরা পড়বে**
+✓ **কোড রক্ষণাবেক্ষণ সহজ হবে**
+✓ **দলগত কাজ আরও সুশৃঙ্খল হবে**
+✓ **ডেভেলপমেন্ট দ্রুততর হবে** — ডিবাগিংয়ে কম সময় যাবে
 
-**সবসময় মনে রাখুন:** `strict: true` আপনার বন্ধু!
-
----
-
-
+**সবসময় মনে রেখো:** `strict: true` তোমার বন্ধু!
