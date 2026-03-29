@@ -3,6 +3,7 @@ import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
 import errorMiddleware from "./middlewares/error.middleware";
 import userRouter from "./modules/user/user.route";
+import authRouter from "./modules/auth/auth.route";
 
 const app = express();
 
@@ -36,6 +37,8 @@ app.get("/api/v1/health", (req, res) => {
 
 // Routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/auth", authRouter);
+
 app.use(errorMiddleware);
 
 export default app;
